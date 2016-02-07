@@ -10,7 +10,10 @@ Java 8 introduced a standard approach to a functional pipeline in Java, through 
 ### What is a Collector?
 
 A [Collector](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html) is described by the JDK as:
->A mutable reduction operation that accumulates input elements into a mutable result container, optionally transforming the accumulated result into a final representation after all input elements have been processed. Reduction operations can be performed either sequentially or in parallel.
+
+
+> A mutable reduction operation that accumulates input elements into a mutable result container, optionally transforming the accumulated result into a final representation after all input elements have been processed. Reduction operations can be performed either sequentially or in parallel.
+
 
 In laymans terms, this means its an operation that takes what's in your stream, shuffles the elements into a single data type (such as adding them to a list), and then gives you back that list. It can happen on both parallel and non-parallel streams.
 
