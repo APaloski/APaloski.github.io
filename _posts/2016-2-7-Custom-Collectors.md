@@ -19,7 +19,7 @@ The `Collector` has three generic arguments (in practice when using a `Stream` y
 * `A` - The type of intermediate container of the `Collector`. This is almost always obfuscated in factory methods by returning a wildcard because it's purely an implementation detail.
 * `R` - The resutling type of the `Collector`. This is the `List<T>` in a Collector that produces a List. It's the final type that your variable will be set equal to when all is said and done.
 
-###Collectors from the JDK
+### Collectors from the JDK
 
 The JDK provides a number of built in Collectors, featured in the [Collectors](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html) class. These allow you to do normal functions such as creating [lists](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toList--), [sets](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toSet--) and [maps](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toMap-java.util.function.Function-java.util.function.Function-) from your stream, [concatenate](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#joining-java.lang.CharSequence-java.lang.CharSequence-java.lang.CharSequence-) the elements into a formatted string and get the [sum](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#summingDouble-java.util.function.ToDoubleFunction-) of all values in the stream. The Collectors class even allows you to have some customization using the [collectingAndThen](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#collectingAndThen-java.util.stream.Collector-java.util.function.Function-) method. 
 
@@ -33,15 +33,15 @@ persons .stream()
 
 This is probably the simplest example of using a `Collector`, but it works well to illustrate our point.
 
-###Guava collections
+### Guava collections
 
 For this article I'm going to use the specialized Collections provided by [Guava](https://github.com/google/guava) as an example. If you haven't checked out this library, I highly recommend it for the custom collection types (e.g. `Multimaps` and `BiMaps`), truly [Immutable](https://github.com/google/guava/wiki/ImmutableCollectionsExplained) collection types and it's many other features.
 
 The important thing to know about Guava for this article, is that it provides a type called [ImmutableList](http://google.github.io/guava/releases/snapshot/api/docs/com/google/common/collect/ImmutableList.html). ImmutableList is a truly immutable collection that can never be modified directly and does not store a view to an otherwise accessible collection (more on that a bit later).
 
-##Writing your own Collector
+## Writing your own Collector
 
-###Collecting to an ImmutableList: Directly
+### Collecting to an ImmutableList: Directly
 
 The `ImmutableList` javadoc states that it can be created directly, simply by giving it the elements in a collection. So if we want to collect to an `ImmutableList` we can just do that right? It can't be very hard given our earlier example.
 
@@ -54,7 +54,7 @@ ImmutableList<String> immutableNames = ImmutableList.copyOf(names);
 
 And that works fine! ...for the first, second, and maybe even 5th time. But at the end of the day, I don't want to be writing that extra line every time I want to create an `ImmutableList` from a `Stream`. Can't we just pack it into a `Collector` directly?
 
-###Collecting using collectingAndThen
+### Collecting using collectingAndThen
 
 As you might imagine, the answer is yes. We can easily create a separate Collector by using the `Collectors.collectingAndThen(Collector, Function)` method provided by the `Collectors` class. So what does that look like?
 
@@ -83,7 +83,7 @@ ImmutableList<String> immutableNames = persons  .stream()
 
 and that's great! So we use it throughout all of our code base... and then we realize, wait we're creating a separate Collection and copying it? Why? Can't we just create it directly?
 
-###Anatomy of a Collector
+### Anatomy of a Collector
 
 `collectingAndThen` can be great for simple transformations, but when you want to do some more complex `Collector` creation the place to turn is directly in the `Collector` interface. Each `Collector` consists of the following elements:
 
@@ -103,7 +103,7 @@ and that's great! So we use it throughout all of our code base... and then we re
 
 Whew! That was a lot to take in. So how do we use it now? The `Collector` class provides two [factory](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html#of-java.util.function.Supplier-java.util.function.BiConsumer-java.util.function.BinaryOperator-java.util.function.Function-java.util.stream.Collector.Characteristics...-) [methods](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html#of-java.util.function.Supplier-java.util.function.BiConsumer-java.util.function.BinaryOperator-java.util.stream.Collector.Characteristics...-) for constructing a Collector, so unless you *really* want to, you don't need to implement the interface yourself.
 
-###Putting it all together: The ImmutableList standalone Collector
+### Putting it all together: The ImmutableList standalone Collector
 
 So back to our `ImmutableList`, one thing I neglected to mention before is that it provides a [Builder](http://google.github.io/guava/releases/snapshot/api/docs/com/google/common/collect/ImmutableList.html#builder()) method and class. This class can be used to construct our elements into a `Builder` before finishing by calling `build()`. If this sounds a lot like elements of our `Collector`, then your head is in the right place for the next part.
 
@@ -119,7 +119,7 @@ public static <T> Collector<T, ?, ImmutableList<T>> toImmutableList() {
 
 Here we use an `ImmutableList.Builder` as our intermediate object, we create it using the `supplier`, we then add new elements to it using `ImmutableList.Builder.add(T)`, next we combine them by adding the result of building from one list to the other. Finally, we finish by calling `build()` on our builder, and returning it.
 
-##Conclusion
+## Conclusion
 
 The `Collector` APIs can seem overwhelming at first, but when you sit down and break down your problem into whats my result and how do i get my elements to there it becomes much simpler. Don't forget that applying a post transform to a `List` or `Set`, via `Collectors.collectingAndThen` can often be the simplest way to reach this goal.
 
