@@ -5,9 +5,9 @@ title: Writing a custom Collector for Java 8 Streams
 
 Java 8 introduced a standard approach to a functional pipeline in Java, through the [Stream](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html) apis which are attached to all Collection implementations. Streams allow you to manipulate the collection by mapping, filtering and reducing the elements; but while filtering and mapping are easy, the reduction hides behind the less than clear [Collector](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html) API.
 
-##Introduction to Collectors
+## Introduction to Collectors
 
-###What is a Collector?
+### What is a Collector?
 
 A [Collector](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html) is described by the JDK as:
 > A mutable reduction operation that accumulates input elements into a mutable result container, optionally transforming the accumulated result into a final representation after all input elements have been processed. Reduction operations can be performed either sequentially or in parallel.
