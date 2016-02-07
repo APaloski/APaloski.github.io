@@ -18,8 +18,11 @@ A [Collector](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collect
 In laymans terms, this means its an operation that takes what's in your stream, shuffles the elements into a single data type (such as adding them to a list), and then gives you back that list. It can happen on both parallel and non-parallel streams.
 
 The `Collector` has three generic arguments (in practice when using a `Stream` you'll likely never need them, but it's good to know when writing a `Collector`):
+
 * `T`: The incoming type of elements from the `Stream`
+
 * `A`: The type of intermediate container of the `Collector`. This is almost always obfuscated in factory methods by returning a wildcard because it's purely an implementation detail.
+
 * `R`: The resutling type of the `Collector`. This is the `List<T>` in a Collector that produces a List. It's the final type that your variable will be set equal to when all is said and done.
 
 ### Collectors from the JDK
