@@ -4,11 +4,7 @@ title: About
 permalink: /about/
 ---
 
-TODO: Replace this todo tag with information about me!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+I'm a Programmer for the State of New York, working on everything from GUI applications through to the database. I enjoy writing small Android and Java applications in my free time.
 
 ### Contact me
 
