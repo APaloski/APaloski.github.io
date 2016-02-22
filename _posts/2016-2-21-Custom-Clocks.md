@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Customizing Java Time: Playing around with Clocks
+title: Customizing Java Time - Playing around with Clocks
 ---
 
 There are at least tens of articles, if not hundreds out there describing the basics of the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html#package.description) APIs introduced in Java 8. Including one released by Oracle themselves, found [here](http://www.oracle.com/technetwork/articles/java/jf14-date-time-2125367.html). But from my experience most of them barely touch on making extensions to the API. So if you're looking for the basics, this article isn't for you; But if you want to do some first step customization it is!
