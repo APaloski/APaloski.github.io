@@ -3,14 +3,14 @@ layout: post
 title: Customizing Java Time: Playing around with Clocks
 ---
 
-There are at least tens of articles, if not hundreds out there describing the basics of the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html#package.description) APIs introduced in Java 8. Including one released by Oracle themselves, found [here](http://www.oracle.com/technetwork/articles/java/jf14-date-time-2125367.html). But from my experience most of them barely touch on making extensions to the API. So if you're looking for the basics, this article isn't for you; if you want to do some first step customization it is!
+There are at least tens of articles, if not hundreds out there describing the basics of the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html#package.description) APIs introduced in Java 8. Including one released by Oracle themselves, found [here](http://www.oracle.com/technetwork/articles/java/jf14-date-time-2125367.html). But from my experience most of them barely touch on making extensions to the API. So if you're looking for the basics, this article isn't for you; But if you want to do some first step customization it is!
 
 # Clocks and you
 
-One of the most stepped over classes in the time APIs is the humble [Clock](https://docs.oracle.com/javase/8/docs/api/java/time/Clock.html). This class acts as the core that generates your `LocalDate`, `LocalDateTime`, etc. classes for a given time period when you don't know the *exact* value you're working with.
+One of the most stepped over classes in the time APIs is the humble [Clock](https://docs.oracle.com/javase/8/docs/api/java/time/Clock.html). This class acts as the core that generates your `LocalDate`, `LocalDateTime`, etc. classes for a given time period when you don't know the *exact* value you're working with. 
 
 Clocks are made up of two simple components:
-* The `ZoneId`: This is the time zone that the clock resides in, this allows for classes such as `ZonedDateTime` to extract the appropriate zone from the clock. Clocks can have their time zones changed via the [withZone(ZoneId)](https://docs.oracle.com/javase/8/docs/api/java/time/Clock.html#withZone-java.time.ZoneId-) method.
+* The `ZoneId`: This is the time zone that the clock resides in (sadly, the name TimeZone was already taken in the Calendar era), this allows for classes such as `ZonedDateTime` to extract the appropriate zone from the clock. Clocks can provide an equivalent instance, but with a different time zone by using the [withZone(ZoneId)](https://docs.oracle.com/javase/8/docs/api/java/time/Clock.html#withZone-java.time.ZoneId-) method.
 * An `Instant`: This is the current time *as seen by the Clock*. This can be obtained either as an `Instant` object, or as a number of millis since the epoch *in UTC*. Both of these methods must return equivalent values if invoked at the exact same time.
 
 By default, the JDK provides the following Clock types, as well as some overloads for working with TimeZones:
@@ -27,13 +27,24 @@ So you want to write your own Clock, simple enough. We just need a ZoneId and In
 
 ## The Basics
 
-First things first: What do we need our Clock to do? Where I work, we have a requirement to always pull fresh time from an external source whenever we need it. So what I want is a Clock that will do that magically for me, but instead of hard coding in the `getExternalTime` method, why don't we just make it use a `Supplier`, so that it can be expanded in the future?
+First things first: What do we need our Clock to do? Where I work, we have a requirement to always pull fresh time from an external source whenever we need a reliable source for time. So what I want is a Clock that will pull from that external source for me, so I can just use all of the built in factory methods.
+
+So lets assume that we have an existing function for pulling the time from the server, defined as 
+```java
+  /**
+   * @return the time on the time server, as millis since epoch UTC.
+   */
+  public static long getServerTime() {
+    //HTTP calls and other fun
+  }
+```
+
+So with knowing the above, lets create the basic bare bones of our clock.
 
 ```java
-public class SupplierClock {
-  private LongSupplier mMillisSupplier;
+public class ServerClock extends Clock {
   
-  //Constructor, zoneId, other boilerplate...
+  //TODO Constructor/ZoneId information
 
   @Override
   public Instant instant() {
@@ -43,28 +54,48 @@ public class SupplierClock {
   
   @Override
   public long millis() {
-    return mMillisSupplier.getAsLong();
+    return ServerTimeProvider.getServerTime();
   }
 
 }
 ```
 
-The one important thing to note here is that one of the instant or millis methods delegates to the other. This ensures that calling one of those methods instead of the other will return the same value.
+With this, we have our basics: We can get an `Instant` or we can get millis, and most importantly if called at the exact same time they will return equivalent values from the `millis()` and `instant()` methods.
 
-But this is simple enough, and then with a simple global we can make a new Clock that delegates to our current time supplier!
+But in addition to the time, we also need to provide ZoneId support via the `getZone()` and `withZone(ZoneId)` methods. 
 
 ```java
-public static final Clock EXTERNAL 
-  = new SupplierClock(TimeSource::getExternalTime); 
+public class ServerClock extends Clock {
+  
+  private final ZoneId mZoneId;
+
+  public ServerClock(ZoneId zoneId) {
+    mZoneId = Objects.requireNonNull(zoneId);
+  }
+  
+  @Override
+  public ZoneId getZone() {
+    return mZoneId;
+  }
+  
+  @Override
+  public ServerClock withZone(ZoneId zone) {
+    if(zone.equals(mZoneId)) {
+      return this; //No need for a new object with the same zone
+    }
+    return new ServerClock(zone);
+  }
+  
+  //Time accessors are the same.
+
 ```
 
-Now, we can follow company policy of using the external time source for all new time instances.
+So lets take a look at this. The first thing to note is that we don't alter our time accessors, this is because both *must* always return as millis since the epoch in UTC, so any change in time zone doesn't affect it. That makes the ZoneId just a simple property of our Clock, with no special handling needed.
 
-## TODO ZONE ID!
 
 ## The weird parts
 
-So I mentioned before that there were a few more complexities that we would need to tackle relating to thread safety, serialization and `equals`/`hashCode`. So lets take a look:
+I mentioned before that there were a few more complexities that we would need to tackle relating to thread safety, serialization and `equals`/`hashCode`. So lets take a look:
 
 ### Equals and HashCode
 
@@ -75,13 +106,10 @@ So for our class, this means we should define our equals method as something lik
 ```java
 @Override
 public boolean equals(Object obj) {
-  return (obj instanceof SupplierClock) &&
-         (obj.getZone().equals(getZone())) &&
-         ((SupplierClock) obj.mMillisSupplier.equals(mMillisSupplier));
+  return (obj instanceof ServerClock) &&
+         (obj.getZone().equals(getZone()));
 }
 ```
-
-However, this will still have some strange behavior. This is mostly due to lambdas using mem equals for equality comparisons, however from local testing two separate definitions of the same lambda (or method reference) in the same method will result in two different instances, but every call to a factory method such as [Function.identity()](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html#identity--) will always return the same instance. So in general the equals here, due to the supplier, is going to act strangely.
 
 Likewise, `Clock` states for hash code:
 > Clocks should override this method based on their state and to meet the contract of {@link Object#hashCode}. If not overridden, the behavior is defined by {@link Object#hashCode}
@@ -90,34 +118,32 @@ So for our class, this means a definition like
 ```java
 @Override
 public long hashCode(Object obj) {
-  return Objects.hash(getZone(), mMillisSupplier);
+  return Objects.hash(getZone());
 }
 ```
 
-### Noting Thread Safety and Serialization
+### Handling Thread Safety and Serialization
 
 The clock class specifically states:
 > Implementations should implement {@code Serializable} wherever possible and must document whether or not they do support serialization.
 
-So, the first question then is: Can we ever be Serializable? My first instinct is yes, someone could directly implement our Supplier on a class (instead of using a lambda or method reference), and that could be serialized. But is there other ways? The answer is yes.
-
-Java 8 introduced the ability to cast objects to an *intersection* of class bounds, meaning that silly things like the following are possible:
-
-```java
-LongSupplier sup = (Serializable & LongSupplier) () -> 100L;
-```
-
-This creates a lambda that can be serialized (how it's internal state is actually represented, that's a completely different question). If you want some additional reading see [Stack Overflow](http://stackoverflow.com/questions/22807912/how-to-serialize-a-lambda).
+As long as someone has all libraries we use to hit the server on the class path, we can be serialized. So we simply implement Serializable and document it on the class for this one.
 
 The clock implementation also states:
 > All implementations that can be instantiated must be final, immutable and thread-safe.
 
-The final and immutable parts of this are easy peasy, but the thread-safe part is unfortunately not as easy. In our example case of using a time server, we're using a global, external resource for it so that's fine. But what if someone wanted to use a class of theirs that was implicitly *not* thread safe? Unfortunately, that won't work with the contract.
+The final and immutable parts of this are easy, and are handled by simply leaving our ZoneId field as final. The thread safety is entirely dependent on the thread safety of our `getServerTime()` method. For this example I'll assume it is thread safe, as we use it globally from any thread already, but it is something that needs to be kept if you implement something similar.
 
-There's no way to us to ensure that what we're given matches that description, so unfortunately we need to pass the buck here and add our own javadoc that states that the Supplier given to us must be thread safe (maybe we want to provide an implementation that takes a `ThreadLocal` or throws an exception if it's on an unexpected thread.
+# Improving our design
+
+This example was by design contrived and simple. In a real world situation you likely would have multiple separate time providers that all want to do something similar to this, and you don't want to create a separate subclass for each one. Due to this, you would want to use something more generic like a clock running off of a `Supplier<Instant>` or `LongSupplier` that provides your UTC since epoch time.
+
+This creates additional challenges with Serialization (see: [How to serialize a lambda](http://stackoverflow.com/questions/22807912/how-to-serialize-a-lambda)), equality (lambdas always check instance equality, but depending on how they're initialized may be one or more instances), and thread safety (the lamdba creator must ensure thread safety) to maintain the contracts of Clock.
+
+An implementation of the `SupplierClock`,  as well as other Clocks and other Java 8 time utilities can be found in the [Timestreams](https://github.com/APaloski/Timestreams) library.
 
 # Wrapping up
 
-Creating your own Clock honestly isn't that bad, but you do need to be careful with the small contract parts. As I've delved deeper into the java time api I've found more and more small gotcha moments like that, so you should read the contracts carefully.
+Creating your own Clock honestly isn't that bad, but you do need to be careful with the small contract parts. As I've delved deeper into the java time API I've found more and more small gotcha moments like that, so you should make sure to read the contracts on all of the classes you're implementing carefully.
 
-
+The full source code for the ServerClock implementation can be found [here](https://gist.github.com/APaloski/35234b40f1ef6340567f)
