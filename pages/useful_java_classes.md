@@ -18,13 +18,38 @@ This class allows you to perform more advanced formattings than String.format or
  * [Android ICU Version, Preferred since 24.0](https://developer.android.com/reference/android/icu/text/MessageFormat.html) 
 
 
-**Example:**
+#### Examples
 ```java
 MessageFormat.format("There {0,choice,0#are no files|1#is one file|1<are {0,number,integer} files}", 3)
 ```
 
 **See Also:** [ChoiceFormat](https://docs.oracle.com/javase/8/docs/api/java/text/ChoiceFormat.html)
 
+### Desktop
+This class allows you to access basic functionality of the underlying computer in which the program is running, if such functionality is available. This makes sending simple emails, launching web pages, and printing documents easy, but also lacks much of the customization that using more specialized APIs provides.
+
+* JDK Source: [Since 1.6](https://docs.oracle.com/javase/8/docs/api/java/awt/Desktop.html)
+* Android Source: Desktop is not available on Android, but the functionality can be acheived and is more powerfully accessible through [Intent](https://developer.android.com/reference/android/content/Intent.html) objects.
+
+####Examples
+Send an email
+```java
+Desktop.getDesktop().mail(URI.create("mailto:person@gmail.gov"));
+```
+Open a website
+```java
+Desktop.getDesktop().browse(URI.create("http://google.com"));
+```
+Open a file (uses the system default program)
+```java
+Desktop.getDesktop().open(new File("/path/to/file"));
+```
+Print a file (uses the system default program to print)
+```java
+Desktop.getDesktop().print(new File("/tmp/out.txt"));
+```
+
+### 
 
 Android
 ------
