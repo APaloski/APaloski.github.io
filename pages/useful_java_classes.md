@@ -49,7 +49,13 @@ Print a file (uses the system default program to print)
 Desktop.getDesktop().print(new File("/tmp/out.txt"));
 ```
 
-### 
+### Externalizable
+Externalizable is a specialized form of Serializable that utilizes public, interface declared methods instead of magic reflection & using the private `readObject` and `writeObject` methods. This will prevent default serialization, and instead use the methods provided in Externalizable to do the serialization. **Note**: A public, no argument constructor is explicitly required for Externalizable, but not for Serializable (except on non-final classes). There is an inspection in IntelliJ/Android Studio to verify this.
+
+* JDK Source: [Since 1.1](https://docs.oracle.com/javase/8/docs/api/java/io/Externalizable.html)
+* Android Source: 
+ * [Since 1.0](https://developer.android.com/reference/java/io/Externalizable.html) objects.
+ * **Note:** On android [Parcelable](https://developer.android.com/reference/android/os/Parcelable.html) should be preferred to Externalizable in most cases.
 
 Android
 ------
@@ -58,7 +64,6 @@ Android
 Allows sending of a [broadcast](https://developer.android.com/reference/android/content/Context.html#sendBroadcast%28android.content.Intent%29) to application local BroadcastReceivers more easily.
 
 * Android Source: [Android Support Library v4](https://developer.android.com/reference/android/support/v4/content/LocalBroadcastManager.html)
-* 
 
 ####Example
 Registering for broadcasts
