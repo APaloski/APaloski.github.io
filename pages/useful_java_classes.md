@@ -54,3 +54,27 @@ Desktop.getDesktop().print(new File("/tmp/out.txt"));
 Android
 ------
 
+### LocalBroadcastManager
+Allows sending of a [broadcast](https://developer.android.com/reference/android/content/Context.html#sendBroadcast%28android.content.Intent%29) to application local BroadcastReceivers more easily.
+
+* Android Source: [Android Support Library v4](https://developer.android.com/reference/android/support/v4/content/LocalBroadcastManager.html)
+* 
+
+####Example
+Registering for broadcasts
+```java
+//onStart
+LocalBroadcastManager.getInstance(this).register(mBroadcastReceiver);
+```
+
+Unregistered for broadcasts
+```java
+//onStop
+LocalBroadcastManager.getInstance(this).unregister(mBroadcastReceiver);
+```
+
+Broadcasting to local classes
+```java
+//Blocking
+LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent());
+```
