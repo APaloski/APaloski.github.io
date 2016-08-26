@@ -31,7 +31,8 @@ This class allows you to access basic functionality of the underlying computer i
 * JDK Source: [Since 1.6](https://docs.oracle.com/javase/8/docs/api/java/awt/Desktop.html)
 * Android Source: Desktop is not available on Android, but the functionality can be acheived and is more powerfully accessible through [Intent](https://developer.android.com/reference/android/content/Intent.html) objects.
 
-####Examples
+#### Examples
+
 Send an email
 ```java
 Desktop.getDesktop().mail(URI.create("mailto:person@gmail.gov"));
@@ -40,10 +41,12 @@ Open a website
 ```java
 Desktop.getDesktop().browse(URI.create("http://google.com"));
 ```
+
 Open a file (uses the system default program)
 ```java
 Desktop.getDesktop().open(new File("/path/to/file"));
 ```
+
 Print a file (uses the system default program to print)
 ```java
 Desktop.getDesktop().print(new File("/tmp/out.txt"));
@@ -97,7 +100,8 @@ Allows sending of a [broadcast](https://developer.android.com/reference/android/
 
 * Android Source: [Android Support Library v4](https://developer.android.com/reference/android/support/v4/content/LocalBroadcastManager.html)
 
-####Example
+#### Example
+
 Registering for broadcasts
 ```java
 //onStart
@@ -105,6 +109,7 @@ LocalBroadcastManager.getInstance(this).register(mBroadcastReceiver);
 ```
 
 Unregistered for broadcasts
+
 ```java
 //onStop
 LocalBroadcastManager.getInstance(this).unregister(mBroadcastReceiver);
