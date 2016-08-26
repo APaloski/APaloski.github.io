@@ -68,7 +68,7 @@ Acts a point of rejoining for a set of tasks that are submitted to an Executor. 
 #### Examples
 ```java
 public void writePageContentToDatabase(List<URI> pageNames) {
-  ExecutorCompletionService<String> service = new ExecutorCompletionService<>(Executors.newFixedThreadPool(10));
+  ExecutorCompletionService<String> service = new ExecutorCompletionService<>(mBackgroundLoadingPool);
   for(URI uri : pageNames) {
     service.submit(new PageLoadingCallable(uri));
   }
