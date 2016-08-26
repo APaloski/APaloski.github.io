@@ -61,9 +61,9 @@ Externalizable is a specialized form of Serializable that utilizes public, inter
 Acts a point of rejoining for a set of tasks that are submitted to an Executor. Instead of awaiting the first submitted task or polling tasks to see if they are "actually done", the service allows you to synchronously acquire results as they complete. This allows you to take synchronous actions on the more quickly completing entries as they come in, instead of possibly bottle necking on the longest running async task and then having to do all of the synchronous processing once it comes in.
 
 * JDK Source: [Since 1.5](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorCompletionService.html)
-** See also: [CompletionService (Interface) Since 1.5](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CompletionService.html)
+ * See also: [CompletionService (Interface) Since 1.5](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CompletionService.html)
 * Android Source: [Since 1.0](https://developer.android.com/reference/java/util/concurrent/ExecutorCompletionService.html)
-** See also: [CompletionService (Interface) Since 1.0](https://developer.android.com/reference/java/util/concurrent/CompletionService.html)
+ * See also: [CompletionService (Interface) Since 1.0](https://developer.android.com/reference/java/util/concurrent/CompletionService.html)
 
 #### Examples
 ```java
