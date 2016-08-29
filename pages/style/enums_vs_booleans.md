@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Code style: Enums vs Booleans
-permalink: /pages/style/enum_vs_boolean
+title: Code style - Enums vs Booleans
+permalink: /pages/style/enum-vs-boolean
 ---
 
 **Rule**: When creating a method, always prefer an enum over a boolean as a paramter.
