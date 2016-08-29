@@ -8,11 +8,13 @@ permalink: /pages/style/enum-vs-boolean
 
 When creating a function, often times using shared code with a simple switch seems like the best choice. Everything is the same except one little flag which will alternate between one of two different states. The problem is, that this often times creates huge ambiguities at the reading site (remember: [code is read much more often than it is written](https://blogs.msdn.microsoft.com/oldnewthing/20070406-00/?p=27343/)). 
 
+#### Without Enums
+
 Take the following for instance:
 
 ```java
   List<Document> findDocuments(boolean includeDraftDocuments) {
-  
+    //...
   }
 ```
 
@@ -29,7 +31,7 @@ It gets worse when you include the fact that APIs tend to get more complex as th
 ```java
   List<Document> findDocuments(boolean includeDraftDocuments,
                                boolean includeSoftDeletes) {
-  
+    //...
   }
 ```
 
@@ -39,16 +41,16 @@ But then the caller sees
   List<Document> myWantedDocuments = findDocuments(false, true);
 ```
 
-...and then the caller does
+...and then the caller transposes the arguments, causing subtle bugs throughout the application.
 
 ```java
   List<Document> myWantedDocuments = findDocuments(mIncludeSoftDeletes, mIncludeDrafts);
 ```
-But, if we instead have the declaration 
+#### With Enums
 
 ```java
   List<Document> findDocuments(DocumentType toInclude) {
-  
+    //...
   }
 ```
 then we can have
