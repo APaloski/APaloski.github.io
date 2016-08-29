@@ -14,8 +14,8 @@ This class allows you to perform more advanced formattings than String.format or
 
 * JDK Source: [Since 1.5 (possibly earlier)](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)
 * Android Source:
- * [java.text Version, since 1.0](https://developer.android.com/reference/java/text/MessageFormat.html)
- * [Android ICU Version, Preferred since 24.0](https://developer.android.com/reference/android/icu/text/MessageFormat.html) 
+  * [java.text Version, since 1.0](https://developer.android.com/reference/java/text/MessageFormat.html)
+  * [Android ICU Version, Preferred since 24.0](https://developer.android.com/reference/android/icu/text/MessageFormat.html) 
 
 
 #### Examples
@@ -61,16 +61,16 @@ Externalizable is a specialized form of Serializable that utilizes public, inter
 
 * JDK Source: [Since 1.1](https://docs.oracle.com/javase/8/docs/api/java/io/Externalizable.html)
 * Android Source: 
- * [Since 1.0](https://developer.android.com/reference/java/io/Externalizable.html) objects.
- * **Note:** On android [Parcelable](https://developer.android.com/reference/android/os/Parcelable.html) should be preferred to Externalizable in most cases.
+  * [Since 1.0](https://developer.android.com/reference/java/io/Externalizable.html) objects.
+  * **Note:** On android [Parcelable](https://developer.android.com/reference/android/os/Parcelable.html) should be preferred to Externalizable in most cases.
 
 ### ExecutorCompletionService (and indirectly CompletionService)
 Acts a point of rejoining for a set of tasks that are submitted to an Executor. Instead of awaiting the first submitted task or polling tasks to see if they are "actually done", the service allows you to synchronously acquire results as they complete. This allows you to take synchronous actions on the more quickly completing entries as they come in, instead of possibly bottle necking on the longest running async task and then having to do all of the synchronous processing once it comes in.
 
 * JDK Source: [Since 1.5](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorCompletionService.html)
- * See also: [CompletionService (Interface) Since 1.5](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CompletionService.html)
+  * See also: [CompletionService (Interface) Since 1.5](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CompletionService.html)
 * Android Source: [Since 1.0](https://developer.android.com/reference/java/util/concurrent/ExecutorCompletionService.html)
- * See also: [CompletionService (Interface) Since 1.0](https://developer.android.com/reference/java/util/concurrent/CompletionService.html)
+  * See also: [CompletionService (Interface) Since 1.0](https://developer.android.com/reference/java/util/concurrent/CompletionService.html)
 
 #### Examples
 ```java
