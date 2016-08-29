@@ -4,7 +4,7 @@ title: Code style - Enums vs Booleans
 permalink: /pages/style/enum-vs-boolean
 ---
 
-**Rule**: When creating a method, always prefer an enum over a boolean as a paramter.
+###**Rule**: When creating a method, always prefer an enum over a boolean as a paramter.
 
 When creating a function, often times using shared code with a simple switch seems like the best choice. Everything is the same except one little flag which will alternate between one of two different states. The problem is, that this often times creates huge ambiguities at the reading site (remember: [code is read much more often than it is written](https://blogs.msdn.microsoft.com/oldnewthing/20070406-00/?p=27343/)). 
 
@@ -32,26 +32,31 @@ It gets worse when you include the fact that APIs tend to get more complex as th
   }
 ```
 
-But then the caller sees 
+But then the caller sees
+
 ```java
   List<Document> myWantedDocuments = findDocuments(false, true);
 ```
 
 ...and then the caller does
+
 ```java
   List<Document> myWantedDocuments = findDocuments(mIncludeSoftDeletes, mIncludeDrafts);
 ```
 But, if we instead have the declaration 
+
 ```java
   List<Document> findDocuments(DocumentType toInclude) {
   
   }
 ```
 then we can have
+
 ```java
    List<Document> myWantedDocuments = findDocuments(DocumentType.DRAFTS);
 ```
 and our future looks less bleak
+
 ```java
   //Compile error, DocumentDeletionType cannot be cast to DocumentType
   List<Document> myWantedDocuments = findDocuments(mIncludeSoftDeletes, mIncludeDrafts);
@@ -60,6 +65,9 @@ and our future looks less bleak
   List<Document> myWantedDocuments = findDocuments(DocumentType.COMPLETED, DocumentDeletionType.NOT_DELETED);
 ```
 
-**Exception**: A simple setter on a boolean property, though that property being a boolean should likely be reconsidered in and of itself.
+###Exceptions
+A simple setter on a boolean property, though that property being a boolean should likely be reconsidered in and of itself.
   
-Supporting Articles: [The boolean trap](https://ariya.io/2011/08/hall-of-api-shame-boolean-trap), [Try to avoid having BOOL paramters](https://blogs.msdn.microsoft.com/oldnewthing/20060828-18/?p=29953)  
+###Supporting Articles
+* [The boolean trap](https://ariya.io/2011/08/hall-of-api-shame-boolean-trap)
+* [Try to avoid having BOOL paramters](https://blogs.msdn.microsoft.com/oldnewthing/20060828-18/?p=29953)  
