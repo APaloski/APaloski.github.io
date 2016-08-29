@@ -50,6 +50,8 @@ But then the caller sees
 ```
 #### With Enums
 
+With enums, we can further clarify the types expected and reduce clutter at the call site
+
 ```java
   List<Document> findDocuments(DocumentType toInclude) {
     //...
