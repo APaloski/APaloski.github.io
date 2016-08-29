@@ -26,6 +26,8 @@ This function is simple enough from the writers point of view, simply say if you
 
 can you tell me at a glance what that flag means?
 
+
+
 It gets worse when you include the fact that APIs tend to get more complex as they evolve. Lets say someone also wanted to add in functionality to be able to get documents that are soft deleted by marking them as deleted, but not actually removing the data. They decide to reuse the existing method, everyone already uses it! ...but they have to add another flag for soft deletes. Even worse, what happens if we add a stage between draft and final?
 
 ```java
