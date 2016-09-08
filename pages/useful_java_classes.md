@@ -95,6 +95,34 @@ public void writePageContentToDatabase(List<URI> pageNames) {
 #### Articles
 [DZone: ExecutorCompletionService](https://dzone.com/articles/executorcompletionservice) 
 
+Unit Testing
+------
+### ParameterSuppliedBy
+This class allows you to create a custom annotation for use with JUnit Theories where the arguments to that annotation can be used to determine what values are passed into the theory.
+
+* JUnit source: [Available in 4.12](http://junit.org/junit4/javadoc/4.12/org/junit/experimental/theories/ParametersSuppliedBy.html)
+
+
+#### Examples
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@ParametersSuppliedBy(MySupplier.class)
+public @interface MyTheoryType {}
+
+public class MySupplier extends ParameterSupplier {
+  @Override
+  public List<PotentialAssignment> getValueSources(final ParameterSignature sig) throws Throwable {
+    MyTheoryType myTheory = sig.getAnnotation(MyTheoryType.class);
+    //Use any parameters on the annotation
+    //Generate any data
+    return Arrays.asList(PotentialData.forValues("Name", "Value"));
+  }
+}
+
+```
+
+**See Also:** [JUnit Blog](http://www.junit-blog.com/search/label/parameterSuppliedBy)
+
 
 Android
 ------
