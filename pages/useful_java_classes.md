@@ -95,6 +95,24 @@ public void writePageContentToDatabase(List<URI> pageNames) {
 #### Articles
 [DZone: ExecutorCompletionService](https://dzone.com/articles/executorcompletionservice) 
 
+### LineNumberReader
+An implementation of BufferedReader that also provides the ever useful ```getLineNumber()``` method. This method allows you to get the current line number that is being read, and allows easy output of a line numbered document from a regular one (probably more useful in IDEs, but could be useful!).
+
+#### Examples
+```java
+public void readNumbered(File file) {
+  try (LineNumberReader reader = new LineNumberReader(new FileReader(file))) {
+    for(String s = reader.readLine(); s != null; s = reader.readLine()) {
+      System.out.println(reader.getLineNumber() + " " + s);
+    }
+  }
+}
+```
+
+* JDK Source: [Since 1.1](http://docs.oracle.com/javase/7/docs/api/java/io/LineNumberReader.html)
+* Android Source: [Since 1.0](https://developer.android.com/reference/java/io/LineNumberReader.html)
+
+
 Unit Testing
 ------
 
@@ -124,6 +142,14 @@ public class MySupplier extends ParameterSupplier {
 
 **See Also:** [JUnit Blog](http://www.junit-blog.com/search/label/parameterSuppliedBy)
 
+### System Rules
+Deferring from the standard 'single class' set up, this is actually a (very) small library that allows you to emulate interactions with the Java System class. This allows you to easily redirect or mock System.in, System.out or System.err, as well as allowing setting of system/environment properties and then restoring them after a unit test. Finally, it also has some security manager configuration help.
+
+#### Examples
+See: [Github.io page for the project](stefanbirkner.github.io/system-rules/)
+
+#### Library dependency:
+See: [Multi-dep declaration page](http://stefanbirkner.github.io/system-rules/download.html)
 
 Android
 ------
