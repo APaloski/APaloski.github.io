@@ -78,3 +78,28 @@ public void square_isEqualToParamTimesParam(@IntRange(min = -10, max = 10) final
 
 Unit testing libraries
 ------
+
+Below are a set up niche libraries that are really helpful for avoiding reinventing the wheel when you need weird things done in JUnit. (I'm not going to list Mockito, PowerMock, etc as they are easily remembered and ubiquitous).
+
+
+### System Rules
+This is a library that utilizes a set of [Junit Rules](http://junit.org/junit4/javadoc/4.12/org/junit/Rule.html) to simplify replacing System classes. It provides rules for working with the standard System streams (out, in, err), Security Managers, System.exit and more.
+
+#### Examples
+Their examples speak for themselves better than I could. Kudos!
+
+See: [Github.io page for the project](http://stefanbirkner.github.io/system-rules/)
+
+#### Library dependency:
+See: [Multi-dep declaration page](http://stefanbirkner.github.io/system-rules/download.html)
+
+### JUnit Toolbox
+This is a library of generic utilities. I've found most use in this from their providing of better JUnit suites, such as multi-threading ones and wildcard ones. Notably, their suites allow you to also include or exclude by category and wildcard, instead of needing to list the classes to be used.
+
+#### Examples
+
+See: [Github home page](https://github.com/MichaelTamm/junit-toolbox)
+
+#### Library dependencies
+See: [Maven Central](https://mvnrepository.com/artifact/com.googlecode.junit-toolbox/junit-toolbox)
+
