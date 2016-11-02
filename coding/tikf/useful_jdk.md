@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Useful Java (JDK) Classes
-permalink: /coding/useful-java-classes
+permalink: /coding/tikf/useful-java-classes
 ---
 
 Useful classes in the JDK (and maybe Android SDK) that I keep forgetting about
