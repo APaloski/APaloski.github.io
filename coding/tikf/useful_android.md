@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Useful Android Classes
-permalink: /pages/useful-android
+permalink: /coding/tikf/useful-android
 ---
 
 Useful Android SDK/Support library classes
