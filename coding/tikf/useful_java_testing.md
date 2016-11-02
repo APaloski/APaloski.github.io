@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Useful Java Unit Testing Classes
-permalink: /coding/tifk/useful_java_testing
+permalink: /coding/tikf/useful_java_testing
 ---
 
 Unit testing classes
