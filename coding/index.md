@@ -12,3 +12,10 @@ The following posts are a set of posts that I've written as I read articles or w
 
 1. [Replace boolean parameters/returns with enum values]({{ site.base }}/coding/style/enum-vs-boolean)
 2. [Prefer value types to primitive values]({{ site.base }}/coding/style/custom-value-types-vs-built-ins)
+
+## Things I Keep Forgetting
+Ever found a class that did that *exact thing* you were looking for... just 3 months later than when you needed it? These are my lists of those classes.
+
+1. [Useful JDK classes]({{ site.base }}/coding/tifk/useful_jdk)
+2. [Useful Java Unit Testing classes]({{ site.base }}/coding/tifk/useful_java_testing)
+3. [Useful Android classes]({{ site.base }}/coding/tifk/useful_android)
