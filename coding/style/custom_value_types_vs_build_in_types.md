@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Code style - Custom Value Types vs Built In Types
-permalink: /pages/style/custom-value-types-vs-built-ins
+permalink: /coding/style/custom-value-types-vs-built-ins
 ---
 
 ### Recommendation
