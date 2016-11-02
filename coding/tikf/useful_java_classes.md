@@ -4,7 +4,7 @@ title: Useful Java Classes
 permalink: /pages/useful-java-classes
 ---
 
-Ever found a class that did that *exact thing* you were looking for... just 3 months later? This is my reference list of those classes.
+Ever found a class that did that *exact thing* you were looking for... just 3 months later than when you needed it? This is my reference list of those classes.
 
 Java
 ------
