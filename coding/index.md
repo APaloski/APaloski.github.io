@@ -16,6 +16,6 @@ The following posts are a set of posts that I've written as I read articles or w
 ## Things I Keep Forgetting
 Ever found a class that did that *exact thing* you were looking for... just 3 months later than when you needed it? These are my lists of those classes.
 
-1. [Useful JDK classes]({{ site.base }}/coding/tifk/useful_jdk)
-2. [Useful Java Unit Testing classes]({{ site.base }}/coding/tifk/useful_java_testing)
-3. [Useful Android classes]({{ site.base }}/coding/tifk/useful_android)
+1. [Useful JDK classes]({{ site.base }}	/coding/tikf/useful-java-classes)
+2. [Useful Java Unit Testing classes]({{ site.base }}/coding/tikf/useful-java-testing)
+3. [Useful Android classes]({{ site.base }}/coding/tikf/useful-android)
